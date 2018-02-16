@@ -6,14 +6,12 @@
 package server;
 
 import controller.Controller;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import view.View;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -22,8 +20,9 @@ import view.View;
 public class HttpServer {
 
     private static final String DBFILENAME = "addressserver.db.json";
+    private static final int port = 12345;
+    private static final int backlog = 200;
     private final Controller controller;
-
     public HttpServer() {
         controller = new Controller(DBFILENAME);
     }
@@ -34,54 +33,25 @@ public class HttpServer {
     public static void main(String[] args) throws IOException {
 
         HttpServer server = new HttpServer();
-
-        ServerSocket serverSocket = new ServerSocket(12345);
         System.out.println("Waiting for connection.....");
-        server.startEventLoop(serverSocket);
+        ServerSocket socket = new ServerSocket(port, backlog);
+        // make the pol about the same size as the backlog
+        LinkedBlockingQueue<Runnable> tasks = new LinkedBlockingQueue<>();
+        ThreadPoolExecutor pool = new ThreadPoolExecutor(10, backlog, 300, TimeUnit.SECONDS, tasks);
+        server.startEventLoop(socket, pool);
     }
 
-    private void startEventLoop(ServerSocket serverSocket) throws IOException {
-
+    private void startEventLoop(ServerSocket socket, ThreadPoolExecutor pool) throws IOException {
         while (true) {
             System.out.println("Event loop - waiting");
 
-            Socket connectionSocket = serverSocket.accept(); 
-
+            Socket connectionSocket = socket.accept(); 
+            
             System.out.println("Incoming connection");
-            BufferedReader br = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
-            OutputStream out = connectionSocket.getOutputStream();
-
-            handleIncomingTcpConnection(br, out);
-            //out.close();
+            HttpConnection conn = new HttpConnection(controller, connectionSocket);
+            pool.execute(conn);
         }
         
     }
-
-    private void handleIncomingTcpConnection(BufferedReader br, OutputStream out) throws IOException {
-        
-        String inputLine = br.readLine();
-        if (inputLine != null) {
-                
-            HttpRequest req = HttpRequest.fromString(inputLine);
-            if (req == null) {
-                return;
-            }
-            System.out.println("Parsed: " + inputLine);
-            View v = controller.respondToLocationRequest(req);
-
-            out.write("HTTP/1.1 ".getBytes());
-            if (v.isOKStatus()) {
-                out.write(("200 OK"+System.lineSeparator()).getBytes());
-            } else {
-                out.write(("404 Not Found"+System.lineSeparator()).getBytes());
-            }
-            out.write(("Content-Type: " + v.getType() + System.lineSeparator()).getBytes());
-            out.write(System.lineSeparator().getBytes());
-            out.write(v.makeBytes());
-            out.write((System.lineSeparator()+System.lineSeparator()).getBytes());
-            System.out.println("Responded.");     
-        }
-        controller.saveDB(DBFILENAME);
-    }
-
+   
 }

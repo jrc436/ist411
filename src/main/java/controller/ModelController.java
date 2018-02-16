@@ -21,18 +21,19 @@ import model.AddressModel;
 public class ModelController {
     private final AddressListModel addresses;
     private final ObjectMapper om;
-    
-    ModelController() {
-        this(new AddressListModel(), new ObjectMapper());
+    private final String dbFileName;
+    private ModelController(String file) {
+        this(new AddressListModel(), new ObjectMapper(), file);
     }
-    private ModelController(AddressListModel model, ObjectMapper om) {
+    private ModelController(AddressListModel model, ObjectMapper om, String file) {
         this.addresses = model;
         this.om = om;
+        this.dbFileName = file;
     }
     static ModelController readDB(String file) {
         ObjectMapper om = new ObjectMapper();
         om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        AddressListModel address = new AddressListModel();
+        AddressListModel address = null;
         File f = new File(file);
         if (f.exists()) {
             try {
@@ -41,20 +42,31 @@ public class ModelController {
                 Logger.getLogger(ModelController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        else {
+            return new ModelController(file);
+        }
         System.out.println("Loaded: "+file);
-        return new ModelController(address, om);
+        return new ModelController(address, om, file);
     }
     void addAddress(AddressModel am) {
-        this.addresses.add(am);
+        synchronized(addresses) {
+            this.addresses.add(am);
+            this.save();
+        }
     }
-    void save(String filename) {
+    private void save() {
         try {
-            addresses.saveJsonToFile(new File(filename), om);
+            synchronized(addresses) {
+                addresses.saveJsonToFile(new File(dbFileName), om);
+            }
         } catch (IOException ex) {
+            System.err.println(ex.getMessage());
             Logger.getLogger(ModelController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     AddressListModel getAddresses() {
-        return addresses;
+        synchronized(addresses) {
+            return addresses;
+        }
     }
 }

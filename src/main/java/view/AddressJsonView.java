@@ -18,6 +18,9 @@ public class AddressJsonView extends View {
     public AddressJsonView(AddressListModel database) {
         this.database = database;
     }
+    public static String getURLString() {
+        return "/json";
+    }
 
     @Override
     public String makeHTML() {

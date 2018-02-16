@@ -17,12 +17,14 @@ import java.io.IOException;
 public abstract class Model  {
     public abstract boolean isValid();
     public JsonNode serializeToJson(ObjectMapper om) {
-        return om.valueToTree(this);
+        return om.valueToTree(this);  
     }
     public String serializeToJsonString() {
         return serializeToJson(new ObjectMapper()).toString();
+        
     }
     public void saveJsonToFile(File f, ObjectMapper om) throws IOException {
         om.writeValue(f, this);
+        
     }
 }

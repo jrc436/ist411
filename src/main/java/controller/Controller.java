@@ -8,6 +8,11 @@ package controller;
 import java.util.HashMap;
 import java.util.Map;
 import server.HttpRequest;
+import view.AddressDataView;
+import view.AddressJsonView;
+import view.AddressListView;
+import view.AddressView;
+import view.HelloView;
 import view.View;
 
 /**
@@ -23,12 +28,12 @@ public class Controller {
         controllerMap = new HashMap<>();
         db = ModelController.readDB(file);
         DefaultViewController def = new DefaultViewController();
-        controllerMap.put("/hello", def);
-        controllerMap.put("/address", new AddressFormController());
+        controllerMap.put(HelloView.getURLString(), def);
+        controllerMap.put(AddressView.getURLString(), new AddressFormController());
         AddressListController alc = new AddressListController();
-        controllerMap.put("/list", alc);
-        controllerMap.put("/json", alc);
-        controllerMap.put("/data", alc);
+        controllerMap.put(AddressListView.getURLString(), alc);
+        controllerMap.put(AddressJsonView.getURLString(), alc);
+        controllerMap.put(AddressDataView.getURLString(), alc);
         this.lookupFile = new FileController();
     }
 
@@ -41,8 +46,4 @@ public class Controller {
     private View controlHelp(ViewController control, HttpRequest request) {
         return control.processRequest(request.getLocation(), request.getParams(), db);
     }
-    public void saveDB(String filename) {
-        db.save(filename);
-    }
-
 }

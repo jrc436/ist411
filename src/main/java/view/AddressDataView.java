@@ -19,6 +19,9 @@ public class AddressDataView extends View {
     public AddressDataView(AddressListModel database) {
         this.database = database;
     }
+    public static String getURLString() {
+        return "/data";
+    }
 
     @Override
     public String makeHTML() {

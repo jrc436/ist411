@@ -16,6 +16,9 @@ public class AddressListView extends View {
     public AddressListView(AddressListModel database) {
         this.database = database;
     }
+    public static String getURLString() {
+        return "/list";
+    }
 
     @Override
     public String makeHTML() {

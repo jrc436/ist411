@@ -25,9 +25,9 @@ public class AddressListController implements ViewController {
     protected final Map<String, Class<? extends View>> urlToView;
     public AddressListController() {
         urlToView = new HashMap<>();
-        urlToView.put("/list", AddressListView.class);
-        urlToView.put("/data", AddressDataView.class);
-        urlToView.put("/json", AddressJsonView.class);
+        urlToView.put(AddressListView.getURLString(), AddressListView.class);
+        urlToView.put(AddressDataView.getURLString(), AddressDataView.class);
+        urlToView.put(AddressJsonView.getURLString(), AddressJsonView.class);
     }
     @Override
     public View processRequest(String location, Map<String, String> params, ModelController db) {

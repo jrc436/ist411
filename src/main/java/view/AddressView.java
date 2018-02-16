@@ -20,6 +20,9 @@ public class AddressView extends View {
     public AddressView(AddressModel am) {
         this.am = am;
     }
+    public static String getURLString() {
+        return "/address";
+    }
 
     @Override
     public String makeHTML() {

@@ -34,18 +34,18 @@ public class AddressListModel extends Model {
     public void add(AddressModel m) {
         // guarantees AddressListModel is always valid
         if (m.isValid()) {
-            addresses.add(m);
+            addresses.add(m);   
         }
     }
     public Iterator<AddressModel> getAddresses() {
         return addresses.iterator();
+        
     }
     public void serializeToFile(String filename) {
-
         try (PrintWriter pw = new PrintWriter(new FileWriter(filename))) {
             for (AddressModel am : addresses) {
                 pw.write(am.serializeToString() + "\n");
-            }
+            }        
             pw.close();
         } catch (IOException ex) {
             Logger.getLogger(AddressListModel.class.getName()).log(Level.SEVERE, null, ex);

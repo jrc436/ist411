@@ -11,6 +11,10 @@ package view;
  */
 public class HelloView extends View {
 
+    public static String getURLString() {
+        return "/hello";
+    }
+     
     @Override
     public String makeHTML() {
         String html = "<html><body>";
