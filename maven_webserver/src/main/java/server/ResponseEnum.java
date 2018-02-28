@@ -11,11 +11,14 @@ package server;
  */
 public enum ResponseEnum {
     OK,
+    BAD,
     NotFound;
     public int errorCode() {
         switch (this) {
             case OK:
                 return 200;
+            case BAD:
+                return 500;
             case NotFound:
                 return 404;
         }
@@ -29,6 +32,9 @@ public enum ResponseEnum {
         switch (this) {
             case OK:
                 sb.append("OK");
+                break;
+            case BAD:
+                sb.append("BAD REQUEST");
                 break;
             case NotFound:
                 sb.append("Not Found");
