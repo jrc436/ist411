@@ -3,17 +3,22 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>ist411</groupId>
-  <artifactId>spring</artifactId>
+  <artifactId>spring_webserver</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>spring</name>
+  <name>spring_webserver</name>
   <url>http://maven.apache.org</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
+  <parent>
+     <groupId>org.springframework.boot</groupId>
+     <artifactId>spring-boot-starter-parent</artifactId>
+     <version>1.5.10.RELEASE</version>
+  </parent>
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -21,5 +26,96 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
+<!--    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core</artifactId>
+      <version>5.0.4.RELEASE</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webmvc</artifactId>
+      <version>5.0.4.RELEASE</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot</artifactId>
+      <version>1.4.0.RELEASE</version>
+    </dependency>
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-java</artifactId>
+      <scope>test</scope>
+      <version>2.44.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.opera</groupId>
+      <artifactId>operadriver</artifactId>
+      <scope>test</scope>
+      <version>1.5</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.seleniumhq.selenium</groupId>
+          <artifactId>selenium-remote-driver</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-actuator</artifactId>
+      <version>1.4.0.RELEASE</version>
+    </dependency>
+-->    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-devtools</artifactId>
+      <version>1.5.10.RELEASE</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-thymeleaf</artifactId>
+      <version>1.5.10.RELEASE</version>
+    </dependency><!--
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <version>5.0.4.RELEASE</version>
+    </dependency>-->
+    <dependency>
+      <groupId>springframework</groupId>
+      <artifactId>spring-orm</artifactId>
+      <version>1.2.6</version>
+    </dependency>
+    <dependency>
+      <groupId>springframework</groupId>
+      <artifactId>spring-webmvc</artifactId>
+      <version>1.2.6</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-core</artifactId>
+      <version>5.0.8.Final</version>
+    </dependency>
+    <dependency>
+      <groupId>org.javassist</groupId>
+      <artifactId>javassist</artifactId>
+      <version>3.22.0-GA</version>
+    </dependency>
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>8.0.9-rc</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.tomcat</groupId>
+      <artifactId>tomcat-dbcp</artifactId>
+      <version>9.0.5</version>
+    </dependency>
   </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>
